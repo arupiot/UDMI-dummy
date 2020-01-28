@@ -35,24 +35,44 @@ class UDumMI():
 
             if self.value_mapping[str(point)][0] == "digital" and point_select and point == point_select:
                 current_val = self.message_config["points"][str(point)]["present_value"]
-
+                # Toggle a 'digital point'
                 self.message_config["points"][str(point)]["present_value"] = 100 if current_val == 0 else 100
 
         return json.dumps(self.message_config)
 
     def buildValueMappingFromFile(self, config_path):
+        LOGGER.info("*** Value Mapping ***")
         if not config_path or not path.exists(config_path):
-            LOGGER.info("No JSON config path, using UDMIduino default")
+            LOGGER.info("No JSON config path for value mapper, using UDMIduino default!")
             return {
                 "lux_level": ["analogue", 20, 30],
-                "lum_value": ["digital", 0, 100],
+                "lum_value": ["digital", 'w'],
                 "dimmer_value": ["analogue", 50, 60]
             }
 
+        with open(config_path) as json_file:
+            conf = json.load(json_file)
+            new_value_mapping = {}
+
+            for point in conf["points"]:
+                LOGGER.info("Processing: " + str(point))
+                if point["digital"] == "true":
+                    value_map = { str(point["name"]) : ["digital", str(point["keybinding"]) ] }
+                    new_value_mapping.update(value_map)
+
+                if point["digital"] == "false":
+                    value_map = { str(point["name"]) : ["analogue", point["analogue"]["low"], point["analogue"]["high"] ] }
+                    new_value_mapping.update(value_map)
+
+        LOGGER.info(new_value_mapping)
+
+        return new_value_mapping
+
     def buildPointsetFromFile(self, config_path):
+        LOGGER.info("*** Pointset Building ***")
         if not config_path or not path.exists(config_path):
             # Return the standard dummy device config from https://github.com/arupiot/udmiduino
-            LOGGER.info("No JSON config path, using UDMIduino default")
+            LOGGER.info("No JSON config path for pointset builder, using UDMIduino default!")
             return {
                     "lux_level": {
                         "present_value": 0
@@ -76,6 +96,7 @@ class UDumMI():
             new_pointset = {}
 
             for point in conf["points"]:
+                LOGGER.info("Processing: " + str(point))
                 new_point = {str(point["name"]) : { "present_value" : 0 } }
                 new_pointset.update(new_point)
 
