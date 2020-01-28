@@ -42,6 +42,6 @@ class Broker():
         print("message retain flag=",message.retain)
 
     def __del__(self):
-        print("Broker died!")
+        LOGGER.info("Broker died!")
         self.client.loop_stop()  # Stop loop
         self.client.disconnect()  # disconnect
