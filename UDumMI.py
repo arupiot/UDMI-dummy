@@ -17,7 +17,7 @@ class UDumMI():
                     "timestamp": "0",
                     "points": {}
                 }
-        self.message_config["points"] = self.buildConfigFromFile(config_path)
+        self.message_config["points"] = self.buildPointsetFromFile(config_path)
         self.broker = broker
 
     def generateMessage(self):
@@ -25,7 +25,7 @@ class UDumMI():
 
         return json.dumps(self.message_config)
 
-    def buildConfigFromFile(self, config_path):
+    def buildPointsetFromFile(self, config_path):
         if not config_path or not path.exists(config_path):
             # Return the standard dummy device config from https://github.com/arupiot/udmiduino
             LOGGER.info("No JSON config path, using UDMIduino default")

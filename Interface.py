@@ -9,7 +9,7 @@ class Interface():
 
     def main(self, stdscr):
         stdscr.addstr(0, 0, "In a world of fancy interfaces, welcome to the UDumMI!")
-        stdscr.addstr(2, 0, "Press 's' to send a random message")
+        stdscr.addstr(2, 0, "Press 's' to send a random message to topic: " + str(self.device.pub_topic))
         stdscr.addstr(10, 0, "Press 'q' to exit")
 
         while True:
