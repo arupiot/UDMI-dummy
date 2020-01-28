@@ -12,18 +12,42 @@ class UDumMI():
     def __init__(self, broker, config_path=None):
         self.pub_topic = 'dittick/UDMIduino-000/events'
         self.sub_topic = 'dittick/UDMIduino-000/lum-value'
+        self.config_path = config_path
         self.message_config = {
                     "version": 1,
                     "timestamp": "0",
                     "points": {}
                 }
-        self.message_config["points"] = self.buildPointsetFromFile(config_path)
+        self.message_config["points"] = self.buildPointsetFromFile(self.config_path)
+        self.value_mapping = self.buildValueMappingFromFile(self.config_path)
         self.broker = broker
 
-    def generateMessage(self):
+    def generateMessage(self, point_select=None):
         self.message_config["timestamp"] = str(datetime.now())
+        for point, v in self.message_config["points"].items():
+            if self.value_mapping[str(point)][0] == "analogue":
+                low = self.value_mapping[str(point)][1]
+                high =  self.value_mapping[str(point)][2]
+                self.message_config["points"][str(point)]["present_value"] = random.uniform(low, high)
+
+            if self.value_mapping[str(point)][0] == "digital" and not point_select:
+                self.message_config["points"][str(point)]["present_value"] = random.uniform(0, 100)
+
+            if self.value_mapping[str(point)][0] == "digital" and point_select and point == point_select:
+                current_val = self.message_config["points"][str(point)]["present_value"]
+
+                self.message_config["points"][str(point)]["present_value"] = 100 if current_val == 0 else 100
 
         return json.dumps(self.message_config)
+
+    def buildValueMappingFromFile(self, config_path):
+        if not config_path or not path.exists(config_path):
+            LOGGER.info("No JSON config path, using UDMIduino default")
+            return {
+                "lux_level": ["analogue", 20, 30],
+                "lum_value": ["digital", 0, 100],
+                "dimmer_value": ["analogue", 50, 60]
+            }
 
     def buildPointsetFromFile(self, config_path):
         if not config_path or not path.exists(config_path):
@@ -63,4 +87,3 @@ class UDumMI():
 
     def __del__(self):
         LOGGER.info("UDumMI Died!")
-        del self.broker
