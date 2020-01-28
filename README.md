@@ -6,3 +6,7 @@
 - Generate random data within a range
 - Tries to be as Pythonic as possible (may fall short)
 - Fork at will!
+
+## Sample Config
+
+Ridulous references from Iain M Banks' [Matter](https://en.wikipedia.org/wiki/Matter_(novel))

@@ -3,7 +3,7 @@ import json
 import random
 
 class UDumMI():
-    def __init__(self):
+    def __init__(self, broker):
         self.message_config = {
             "version": 1,
             "timestamp": "0",
