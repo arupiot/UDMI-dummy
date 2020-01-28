@@ -1,49 +1,40 @@
 from time import sleep
 import paho.mqtt.client as mqtt
-
-# print("Connecting to broker ", BROKER)
-# client.connect(BROKER, BROKER_PORT, 60)  # connect to broker
-
-# # Subscribe to the topic from ditto (or elsewhere)
-
-# while not client.connected_flag:  # wait in loop
-#     print("In wait loop")
-#     sleep(1)
-
-# print("Subscribing to LED toggle topic... ")
-# client.subscribe(UDMIDUINO_SUB_TOPIC)
-
-# print("in Main Loop")
-# print("Publishing...")
-
-# while(True):
-#     ret = 
-#     sleep(0.4)
+import logging
+logging.basicConfig(level=logging.INFO)
+LOGGER = logging.getLogger('Broker')
 
 class Broker():
     def __init__(self):
         self.broker_host = "localhost"
         self.broker_port = 3389
-        self.udmiduino_pub_topic = 'dittick/UDMIduino-000/events'
-        self.udmiduino_sub_topic = 'dittick/UDMIduino-000/lum-value'
         mqtt.Client.connected_flag = False  # create flag in class
         self.client = mqtt.Client("DitTICK Dummy Gateway")  # create new instance
-        self.client.on_connect = self.onConnect  # bind call back function
-        self.client.on_message = self.onMessage #attach function to callback
+        self.client.on_connect = self.on_connect  # bind call back function
+        self.client.on_message = self.on_message #attach function to callback
+        print("Connecting to broker:", self.broker_host, "on port:", self.broker_port)
+        self.client.connect(self.broker_host, self.broker_port, 60)  # connect to broker
         self.client.loop_start()
+        while not self.client.connected_flag:  # wait in loop
+            LOGGER.info("Waiting for connection...")
+            sleep(1)
 
+    def messageLoop(self, topic, message_gen_cb):
+        while(True):
+            self.sendMessage(topic, message_gen_cb())
+            sleep(0.4)
 
-    def sendMessage(self):
-        self.client.publish(UDMIDUINO_PUB_TOPIC, DUMMY_DEVICE.generateMessage())
+    def sendMessage(self, topic, message):
+        self.client.publish(topic, message)
 
-    def onConnect(self, client, userdata, flags, rc):
+    def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
-            client.connected_flag = True  # set flag
-            print("connected OK")
+            self.client.connected_flag = True  # set flag
+            LOGGER.info("Connected OK!")
         else:
             print("Bad connection Returned code=", rc)
 
-    def onMessage(self, client, userdata, message):
+    def on_message(self, client, userdata, message):
         payload = str(message.payload.decode("utf-8"))
         print("message received " ,payload)
         print("message topic=",message.topic)
@@ -51,5 +42,6 @@ class Broker():
         print("message retain flag=",message.retain)
 
     def __del__(self):
+        print("Broker died!")
         self.client.loop_stop()  # Stop loop
         self.client.disconnect()  # disconnect
