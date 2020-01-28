@@ -15,7 +15,7 @@ parser.add_argument("--config", "-c", help="Path to the JSON config. If blank, r
 args = parser.parse_args()
 
 broker = Broker()
-device = UDumMI(broker)
+device = UDumMI(broker, args.config)
 
 # check for --interface
 if args.interface:
