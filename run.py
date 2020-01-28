@@ -1,15 +1,13 @@
-# main.py
-
+# run.py
 # All is called from here
 
-# include standard modules
 import argparse
 from UDumMI import UDumMI
 from Interface import Interface
 from Broker import Broker
 import logging
 logging.basicConfig(level=logging.INFO)
-LOGGER = logging.getLogger('ROOT')
+LOGGER = logging.getLogger('root')
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--interface", "-i", help="For configurations with controllable points, launch the 'interface'", action="store_true")
