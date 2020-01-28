@@ -6,18 +6,22 @@ from UDumMI import UDumMI
 from Interface import Interface
 from Broker import Broker
 import logging
+
+# Set up logging
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger('root')
 
+# Options to control the flow of things
 parser = argparse.ArgumentParser()
 parser.add_argument("--interface", "-i", help="For configurations with controllable points, launch the 'interface'", action="store_true")
 parser.add_argument("--config", "-c", help="Path to the JSON config. If blank, revert to UDMIduino format")
 args = parser.parse_args()
 
+# Assemble components
 broker = Broker()
 device = UDumMI(broker, args.config)
 
-# check for --interface
+# Execute
 if args.interface:
     LOGGER.info("Launching interface...")
     Interface(device)

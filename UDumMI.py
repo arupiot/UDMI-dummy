@@ -25,18 +25,19 @@ class UDumMI():
     def generateMessage(self, point_select=None):
         self.message_config["timestamp"] = str(datetime.now())
         for point, v in self.message_config["points"].items():
-            if self.value_mapping[str(point)][0] == "analogue":
+            point_type = self.value_mapping[str(point)][0]
+            if point_type == "analogue":
                 low = self.value_mapping[str(point)][1]
                 high =  self.value_mapping[str(point)][2]
                 self.message_config["points"][str(point)]["present_value"] = random.uniform(low, high)
 
-            if self.value_mapping[str(point)][0] == "digital" and not point_select:
-                self.message_config["points"][str(point)]["present_value"] = random.uniform(0, 100)
-
-            if self.value_mapping[str(point)][0] == "digital" and point_select and point == point_select:
+            if point_type == "digital" and point_select and point == point_select:
                 current_val = self.message_config["points"][str(point)]["present_value"]
                 # Toggle a 'digital point'
-                self.message_config["points"][str(point)]["present_value"] = 100 if current_val == 0 else 100
+                if current_val == 100:
+                    self.message_config["points"][str(point)]["present_value"] = 0
+                if current_val == 0:
+                    self.message_config["points"][str(point)]["present_value"] = 100
 
         return json.dumps(self.message_config)
 

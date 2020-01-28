@@ -7,25 +7,34 @@ class Interface():
         self.device = device
         wrapper(self.main)
 
+    def cleanup(self, stdscr):
+        stdscr.clrtoeol()
+        stdscr.refresh()
+        stdscr.addstr(5, 0, "Sending...")
+
+    def cleandown(self, stdscr, msg):
+        stdscr.clrtoeol()
+        stdscr.refresh()
+        stdscr.addstr(5, 0, "Last sent: " + str(msg))
+
     def main(self, stdscr):
         stdscr.addstr(0, 0, "In a world of fancy interfaces, welcome to the UDumMI!")
         stdscr.addstr(2, 0, "Press 's' to send a random message to topic: " + str(self.device.pub_topic))
-        stdscr.addstr(10, 0, "Press 'q' to exit")
+        stdscr.addstr(3, 0, "Press 'w' to toggle 'lum_value' between 0->100")
+        stdscr.addstr(11, 0, "Press 'q' to exit")
 
         while True:
             c = stdscr.getch()
             if c == ord('s'):
-                stdscr.clrtoeol()
-                stdscr.refresh()
-                stdscr.addstr(4, 0, "Sending...")
-
+                self.cleanup(stdscr)
                 message = self.device.generateMessage()
                 self.device.broker.sendMessage(self.device.pub_topic, message)
-
-                stdscr.clrtoeol()
-                stdscr.refresh()
-
-                stdscr.addstr(4, 0, "Last sent: " + str(message))
+                self.cleandown(stdscr, message)
+            elif c == ord('w'):
+                self.cleanup(stdscr)
+                message = self.device.generateMessage("lum_value")
+                self.device.broker.sendMessage(self.device.pub_topic, message)
+                self.cleandown(stdscr, message)
             elif c == ord('q'):
                 del self.device
                 break  # Exit the while loop

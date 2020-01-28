@@ -12,7 +12,7 @@ class Broker():
         self.client = mqtt.Client("DitTICK Dummy Gateway")  # create new instance
         self.client.on_connect = self.on_connect  # bind call back function
         self.client.on_message = self.on_message #attach function to callback
-        print("Connecting to broker:", self.broker_host, "on port:", self.broker_port)
+        LOGGER.info(str(["Connecting to broker:", self.broker_host, "on port:", self.broker_port]))
         self.client.connect(self.broker_host, self.broker_port, 60)  # connect to broker
         self.client.loop_start()
         while not self.client.connected_flag:  # wait in loop
@@ -36,10 +36,6 @@ class Broker():
 
     def on_message(self, client, userdata, message):
         payload = str(message.payload.decode("utf-8"))
-        print("message received " ,payload)
-        print("message topic=",message.topic)
-        print("message qos=",message.qos)
-        print("message retain flag=",message.retain)
 
     def __del__(self):
         LOGGER.info("Broker died!")
