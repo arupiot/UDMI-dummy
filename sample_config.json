@@ -1,0 +1,21 @@
+{
+    "namespace" : "sursamen",
+    "device_name" : "DRONE-001",
+    "points" : [
+        {
+            "name" : "knife_missles",
+            "digital": "false",
+            "keybinding": "null",
+            "analogue": {
+                "high": 8,
+                "low": 0
+            }
+        },
+        {
+            "name" : "flashlight_level",
+            "digital": "true",
+            "keybinding": "f",
+            "analogue": "null"
+        }
+    ]
+}
