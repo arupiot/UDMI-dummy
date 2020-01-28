@@ -14,6 +14,27 @@
             "name" : "flashlight_level",
             "digital": "true",
             "keybinding": "f"
+        },
+        {
+            "name" : "agent_location_x",
+            "digital": "false",
+            "analogue": {
+                "high": 1000,
+                "low": 657
+            }
+        },
+        {
+            "name" : "agent_location_y",
+            "digital": "false",
+            "analogue": {
+                "high": 209,
+                "low": 14
+            }
+        },
+        {
+            "name" : "am_stock_full",
+            "digital": "true",
+            "keybinding": "a"
         }
     ]
 }

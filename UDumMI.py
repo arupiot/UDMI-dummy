@@ -56,7 +56,7 @@ class UDumMI():
             new_value_mapping = {}
 
             for point in conf["points"]:
-                LOGGER.info("Processing: " + str(point))
+                LOGGER.info("Processing: " + point["name"])
                 if point["digital"] == "true":
                     value_map = { str(point["name"]) : ["digital", str(point["keybinding"]) ] }
                     new_value_mapping.update(value_map)
@@ -97,7 +97,7 @@ class UDumMI():
             new_pointset = {}
 
             for point in conf["points"]:
-                LOGGER.info("Processing: " + str(point))
+                LOGGER.info("Processing: " + point["name"])
                 new_point = {str(point["name"]) : { "present_value" : 0 } }
                 new_pointset.update(new_point)
 
