@@ -1,0 +1,19 @@
+{
+    "namespace" : "SLEEPER-SERVICE",
+    "device_name" : "ISHIKI-001",
+    "points" : [
+        {
+            "name" : "temp",
+            "digital": "false",
+            "analogue": {
+                "high": 25,
+                "low": 19
+            }
+        },
+        {
+            "name" : "occupied",
+            "digital": "true",
+            "keybinding": "o"
+        }
+    ]
+}

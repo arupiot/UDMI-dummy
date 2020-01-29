@@ -5,7 +5,7 @@ import logging
 import os.path
 from os import path
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 LOGGER = logging.getLogger('UDumMI')
 
 class UDumMI():
