@@ -4,13 +4,22 @@ If you need to simulate arbitrary telemetry data from a device that doesn't work
 
 High level notes:  
   
-- Python 3
+- **Python 3**
 - Designed for testing!
 - Sends MQTT messages to a broker based on a [UDMI 'pointset'](https://github.com/faucetsdn/daq/blob/master/schemas/udmi/pointset.tests/example.json) configuration
 - Control actuators (digital on/off) with config defined keyboard keys
 - Generate random floating point data within a range
 - Tries to be as Pythonic as possible (may fall short)
 - Fork at will!
+- **Definitely Python 3**
+
+## Installation
+
+Use a [venv](https://docs.python.org/3/library/venv.html) if you wish, either way:
+
+```
+$ pip install -r requirements.txt
+```
 
 ## Usage
 
