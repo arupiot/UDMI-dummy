@@ -15,8 +15,8 @@ LOGGER = logging.getLogger('root')
 parser = argparse.ArgumentParser()
 parser.add_argument("--interface", "-i", help="For configurations with controllable points, launch the 'interface'", action="store_true")
 parser.add_argument("--config", "-c", help="Path to the JSON config. If blank, revert to UDMIduino format")
-parser.add_argument("--broker_host", "-bh", help="MQTT broker hostname string")
-parser.add_argument("--broker_port", "-bp", help="MQTT broker TCP port")
+parser.add_argument("--broker_host", "-bh", help="MQTT broker hostname string. If blank, set to 'localhost'")
+parser.add_argument("--broker_port", "-bp", help="MQTT broker TCP port. If blank, set to 3389")
 args = parser.parse_args()
 
 # Assemble components
