@@ -1,0 +1,19 @@
+{
+    "namespace" : "dittick",
+    "device_name" : "UDMIduino-000",
+    "points" : [
+        {
+            "name" : "lum_value",
+            "digital": "true",
+            "keybinding": "l"
+        },
+        {
+            "name" : "temp",
+            "digital": "false",
+            "analogue": {
+                "high": 30,
+                "low": 0
+            }
+        }
+    ]
+}
