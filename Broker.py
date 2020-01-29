@@ -5,9 +5,9 @@ logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger('Broker')
 
 class Broker():
-    def __init__(self):
-        self.host = "localhost"
-        self.port = 3389
+    def __init__(self, host, port):
+        self.host = str(host) if host != None else "localhost"
+        self.port = int(port) if port != None else 3389
         mqtt.Client.connected_flag = False  # create flag in class
         self.client = mqtt.Client("DitTICK Dummy Gateway")  # create new instance
         self.client.on_connect = self.on_connect  # bind call back function
