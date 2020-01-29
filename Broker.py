@@ -6,14 +6,14 @@ LOGGER = logging.getLogger('Broker')
 
 class Broker():
     def __init__(self):
-        self.broker_host = "localhost"
-        self.broker_port = 3389
+        self.host = "localhost"
+        self.port = 3389
         mqtt.Client.connected_flag = False  # create flag in class
         self.client = mqtt.Client("DitTICK Dummy Gateway")  # create new instance
         self.client.on_connect = self.on_connect  # bind call back function
         self.client.on_message = self.on_message #attach function to callback
-        LOGGER.info(str(["Connecting to broker:", self.broker_host, "on port:", self.broker_port]))
-        self.client.connect(self.broker_host, self.broker_port, 60)  # connect to broker
+        LOGGER.info(str(["Connecting to broker:", self.host, "on port:", self.port]))
+        self.client.connect(self.host, self.port, 60)  # connect to broker
         self.client.loop_start()
         while not self.client.connected_flag:  # wait in loop
             LOGGER.info("Waiting for connection...")
